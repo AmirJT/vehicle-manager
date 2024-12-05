@@ -1,17 +1,13 @@
-// Import required modules and classes  
 import inquirer from "inquirer";
 import Car from "./Car.js";
 import Truck from "./Truck.js";
 import Motorbike from "./Motorbike.js";
 import Wheel from "./Wheel.js";
-// Define the Cli class  
 class Cli {
-    // Constructor  
     constructor(vehicles) {
         this.exit = false;
         this.vehicles = vehicles;
     }
-    // Method to choose a vehicle from existing vehicles  
     chooseVehicle() {
         inquirer
             .prompt([
@@ -28,13 +24,10 @@ class Cli {
             },
         ])
             .then((answers) => {
-            // Set the selectedVehicleVin to the vin of the selected vehicle  
             this.selectedVehicleVin = answers.selectedVehicleVin;
-            // Perform actions on the selected vehicle  
             this.performActions();
         });
     }
-    // Method to create a vehicle  
     createVehicle() {
         inquirer
             .prompt([
@@ -47,20 +40,16 @@ class Cli {
         ])
             .then((answers) => {
             if (answers.vehicleType === 'Car') {
-                // Create a car  
                 this.createCar();
             }
             else if (answers.vehicleType === 'Truck') {
-                // Create a truck  
                 this.createTruck();
             }
             else if (answers.vehicleType === 'Motorbike') {
-                // Create a motorbike  
                 this.createMotorbike();
             }
         });
     }
-    // Method to create a car  
     createCar() {
         inquirer
             .prompt([
@@ -97,15 +86,11 @@ class Cli {
         ])
             .then((answers) => {
             const car = new Car(Math.random().toString(36).substring(2, 15), answers.color, answers.make, answers.model, parseInt(answers.year), parseInt(answers.weight), parseInt(answers.topSpeed), []);
-            // Push the car to the vehicles array  
             this.vehicles.push(car);
-            // Set the selectedVehicleVin to the vin of the car  
             this.selectedVehicleVin = car.vin;
-            // Perform actions on the car  
             this.performActions();
         });
     }
-    // Method to create a truck  
     createTruck() {
         inquirer
             .prompt([
@@ -152,7 +137,6 @@ class Cli {
             this.performActions();
         });
     }
-    // Method to create a motorbike  
     createMotorbike() {
         inquirer
             .prompt([
@@ -217,7 +201,6 @@ class Cli {
             this.performActions();
         });
     }
-    // Method to find a vehicle to tow  
     findVehicleToTow(truck) {
         inquirer
             .prompt([
@@ -244,7 +227,6 @@ class Cli {
             }
         });
     }
-    // Method to perform actions on a vehicle  
     performActions() {
         inquirer
             .prompt([
@@ -269,65 +251,55 @@ class Cli {
             },
         ])
             .then((answers) => {
-            // Perform the selected action  
             if (answers.action === 'Print details') {
-                // Find the selected vehicle and print its details  
                 const vehicle = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (vehicle) {
                     vehicle.printDetails();
                 }
             }
             else if (answers.action === 'Start vehicle') {
-                // Find the selected vehicle and start it  
                 const vehicle = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (vehicle) {
                     vehicle.start();
                 }
             }
             else if (answers.action === 'Accelerate 5 MPH') {
-                // Find the selected vehicle and accelerate it by 5 MPH  
                 const vehicle = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (vehicle) {
                     vehicle.accelerate(5);
                 }
             }
             else if (answers.action === 'Decelerate 5 MPH') {
-                // Find the selected vehicle and decelerate it by 5 MPH  
                 const vehicle = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (vehicle) {
                     vehicle.decelerate(5);
                 }
             }
             else if (answers.action === 'Stop vehicle') {
-                // Find the selected vehicle and stop it  
                 const vehicle = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (vehicle) {
                     vehicle.stop();
                 }
             }
             else if (answers.action === 'Turn right') {
-                // Find the selected vehicle and turn it right  
                 const vehicle = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (vehicle) {
                     vehicle.turn('right');
                 }
             }
             else if (answers.action === 'Turn left') {
-                // Find the selected vehicle and turn it left  
                 const vehicle = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (vehicle) {
                     vehicle.turn('left');
                 }
             }
             else if (answers.action === 'Reverse') {
-                // Find the selected vehicle and reverse it  
                 const vehicle = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (vehicle) {
                     vehicle.reverse();
                 }
             }
             else if (answers.action === 'Tow') {
-                // Find the selected truck and tow another vehicle  
                 const truck = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (truck) {
                     this.findVehicleToTow(truck);
@@ -339,7 +311,6 @@ class Cli {
                 }
             }
             else if (answers.action === 'Wheelie') {
-                // Find the selected motorbike and perform a wheelie  
                 const motorbike = this.vehicles.find((v) => v.vin === this.selectedVehicleVin);
                 if (motorbike) {
                     motorbike.wheelie();
@@ -351,21 +322,17 @@ class Cli {
                 }
             }
             else if (answers.action === 'Select or create another vehicle') {
-                // Start the CLI to return to the initial prompt  
                 this.startCli();
                 return;
             }
             else {
-                // Exit the CLI  
                 this.exit = true;
             }
             if (!this.exit) {
-                // If the user does not want to exit, perform actions on the selected vehicle  
                 this.performActions();
             }
         });
     }
-    // Method to start the CLI  
     startCli() {
         inquirer
             .prompt([
@@ -377,7 +344,6 @@ class Cli {
             },
         ])
             .then((answers) => {
-            // Check if the user wants to create a new vehicle or select an existing vehicle  
             if (answers.CreateOrSelect === 'Create a new vehicle') {
                 this.createVehicle();
             }
@@ -387,5 +353,4 @@ class Cli {
         });
     }
 }
-// Export the Cli class  
 export default Cli;
